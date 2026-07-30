@@ -270,23 +270,39 @@ export default function App() {
             </button>
           </div>
 
-          <div style={{ 
-            background: '#070a12', 
-            borderRadius: '10px', 
-            padding: '1.25rem', 
-            fontFamily: 'var(--font-mono)', 
-            fontSize: '0.85rem', 
-            minHeight: '220px',
-            maxHeight: '300px',
-            overflowY: 'auto',
-            border: '1px solid rgba(255,255,255,0.05)'
-          }}>
+          <div 
+            ref={(el) => {
+              if (el) el.scrollTop = el.scrollHeight;
+            }}
+            style={{ 
+              background: '#070a12', 
+              borderRadius: '10px', 
+              padding: '1.25rem', 
+              fontFamily: 'var(--font-mono)', 
+              fontSize: '0.85rem', 
+              minHeight: '220px',
+              maxHeight: '300px',
+              overflowY: 'auto',
+              border: '1px solid rgba(255,255,255,0.05)'
+            }}
+          >
             {activeStage?.logs.map((line, index) => (
-              <div key={index} style={{ marginBottom: '0.4rem', color: line.includes('[SUCCESS]') ? 'var(--accent-emerald)' : line.includes('[TRIGGER]') ? 'var(--accent-cyan)' : '#d1d5db' }}>
+              <div 
+                key={index} 
+                style={{ 
+                  marginBottom: '0.4rem', 
+                  padding: line.includes('[EXEC]') || line.includes('[INIT]') ? '0.2rem 0.4rem' : '0',
+                  borderRadius: '4px',
+                  background: line.includes('[EXEC]') ? 'rgba(6, 182, 212, 0.1)' : 'transparent',
+                  color: line.includes('[SUCCESS]') ? 'var(--accent-emerald)' : line.includes('[EXEC]') ? 'var(--accent-cyan)' : line.includes('[INIT]') ? 'var(--accent-amber)' : '#d1d5db',
+                  fontWeight: line.includes('[EXEC]') ? 600 : 400
+                }}
+              >
                 {line}
               </div>
             ))}
           </div>
+
         </section>
 
         {/* Live Container Deployment Info */}
