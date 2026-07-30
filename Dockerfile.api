@@ -1,0 +1,14 @@
+# Stage 1: Build & Dependencies
+FROM node:22-alpine AS api-builder
+WORKDIR /app
+RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
+COPY package.json pnpm-lock.yaml ./
+COPY node_modules ./node_modules
+
+
+COPY . .
+
+# Expose Express API Port
+EXPOSE 3001
+
+CMD ["pnpm", "dlx", "tsx", "server/index.ts"]
