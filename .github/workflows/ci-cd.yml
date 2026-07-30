@@ -45,17 +45,13 @@ jobs:
           password: ${{ github.token }}
 
 
-      - name: Lowercase Repository Name
-        run: |
-          echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-
       - name: Build & Push Web Frontend Container Image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
-          tags: ghcr.io/${{ env.REPO_LOWER }}-web:latest
+          tags: ghcr.io/hasrat270/full-stack-devops-pipeline-web:latest
 
       - name: Build & Push Backend API Container Image
         uses: docker/build-push-action@v5
@@ -63,7 +59,8 @@ jobs:
           context: .
           file: ./Dockerfile.api
           push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
-          tags: ghcr.io/${{ env.REPO_LOWER }}-backend:latest
+          tags: ghcr.io/hasrat270/full-stack-devops-pipeline-backend:latest
+
 
   deploy-to-aws-ec2:
     name: ☁️ Deploy Containers to AWS EC2 via SSH & Docker Compose
