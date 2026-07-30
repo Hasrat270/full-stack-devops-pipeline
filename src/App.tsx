@@ -73,28 +73,53 @@ export default function App() {
 
   useEffect(() => {
     fetchPipelineData();
-    const interval = setInterval(fetchPipelineData, 5000);
-    return () => clearInterval(interval);
+    
+    // Connect to WebSocket Server for Real-Time Streaming Updates
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      setBackendConnected(true);
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'PIPELINE_UPDATE') {
+          setStages(data.stages);
+          setEnvironment(data.environment);
+          setBackendConnected(true);
+        }
+      } catch (err) {
+        console.error('WebSocket parse error:', err);
+      }
+    };
+
+    ws.onerror = () => {
+      setBackendConnected(false);
+    };
+
+    return () => {
+      ws.close();
+    };
   }, []);
 
   const handleTriggerPipeline = async () => {
     setIsTriggering(true);
     try {
-      const res = await fetch('/api/pipeline/trigger', {
+      await fetch('/api/pipeline/trigger', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ commitMsg: 'Manual CI/CD run triggered from dashboard' })
+        body: JSON.stringify({ commitMsg: 'Live WebSocket trigger from UI dashboard' })
       });
-      if (res.ok) {
-        const data = await res.json();
-        setStages(data.stages);
-      }
     } catch (e) {
       console.error(e);
     } finally {
-      setTimeout(() => setIsTriggering(false), 1200);
+      setTimeout(() => setIsTriggering(false), 800);
     }
   };
+
 
   const activeStage = stages.find((s) => s.id === activeStageId) || stages[0];
 
