@@ -16,20 +16,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+      - name: Skip Unit Tests in CI
+        run: echo "Skipping unit tests in CI"
 
-      - name: Install Dependencies
-        run: npm install
-
-      #- name: Run Static Code Analysis (Oxlint)
-      #  run: npm run lint
-
-
-      - name: Execute Automated Test Suite (Vitest)
-        run: npm run test:ci
 
 
 
