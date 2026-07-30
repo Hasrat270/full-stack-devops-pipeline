@@ -21,17 +21,15 @@ jobs:
         with:
           node-version: 22
 
-      - name: Enable Corepack & Install pnpm
-        run: corepack enable && corepack prepare pnpm@11.5.1 --activate
-
       - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: npm install
 
       - name: Run Static Code Analysis (Oxlint)
-        run: pnpm run lint
+        run: npm run lint
 
       - name: Execute Automated Test Suite (Vitest)
-        run: pnpm run test:ci
+        run: npm run test:ci
+
 
 
   build-and-push-docker:
