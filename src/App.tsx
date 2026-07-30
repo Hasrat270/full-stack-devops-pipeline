@@ -51,25 +51,10 @@ export default function App() {
         setBackendConnected(true);
       }
     } catch {
-      // Fallback mock data if API call fails during dev static server preview
-      setStages([
-        { id: '1', name: 'Lint & Static Analysis', status: 'passed', duration: 4, logs: ['[INFO] Running oxlint static check...', '[SUCCESS] Clean syntax! Zero lint warnings or errors.'] },
-        { id: '2', name: 'Unit & Integration Tests', status: 'passed', duration: 12, logs: ['[INFO] Launching Vitest suite...', '[SUCCESS] 3/3 backend tests passed (100% code coverage).'] },
-        { id: '3', name: 'Docker Image Build', status: 'passed', duration: 28, logs: ['[INFO] Building multi-stage Docker image...', '[SUCCESS] Docker image cicd-web-app:latest compiled (64MB).'] },
-        { id: '4', name: 'Security Vulnerability Scan', status: 'passed', duration: 8, logs: ['[INFO] Running container security analysis...', '[SUCCESS] 0 CVE vulnerabilities found in base image nginx:alpine.'] },
-        { id: '5', name: 'Container Deployment', status: 'passed', duration: 6, logs: ['[INFO] Deploying container web-app-prod to Docker daemon...', '[SUCCESS] Live service bound to http://localhost:8080.'] },
-      ]);
-      setEnvironment({
-        name: 'Production (Docker Engine)',
-        url: 'http://localhost:8080',
-        containerId: 'cnt-8f92a1b4',
-        status: 'running',
-        uptime: '99.99%',
-        version: 'v1.2.0'
-      });
       setBackendConnected(false);
     }
   };
+
 
   useEffect(() => {
     fetchPipelineData();
@@ -135,12 +120,12 @@ export default function App() {
             <h1 style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', background: 'linear-gradient(to right, #fff, #9ca3af)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               DevOps CI/CD Automation Center
             </h1>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
-              <GitBranch size={14} color="var(--accent-cyan)" /> Branch: <code style={{ color: '#fff', background: 'rgba(255,255,255,0.1)', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>main</code> 
-              <span style={{ margin: '0 0.25rem' }}>•</span>
-              <Activity size={14} color={backendConnected ? 'var(--accent-emerald)' : 'var(--accent-amber)'} /> 
-              {backendConnected ? 'Connected to API telemetry' : 'Standalone demo mode'}
-            </p>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
+                <GitBranch size={14} color="var(--accent-cyan)" /> Branch: <code style={{ color: '#fff', background: 'rgba(255,255,255,0.1)', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>main</code> 
+                <span style={{ margin: '0 0.25rem' }}>•</span>
+                <Activity size={14} color={backendConnected ? 'var(--accent-emerald)' : 'var(--accent-rose)'} /> 
+                {backendConnected ? 'Live API Telemetry Connected' : 'Reconnecting to API...'}
+              </p>
           </div>
         </div>
 

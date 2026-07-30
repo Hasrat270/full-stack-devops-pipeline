@@ -44,6 +44,7 @@ let environment: DeploymentEnvironment = {
   version: 'v1.4.0',
 };
 
+
 // Broadcast data to all connected WebSocket clients
 const broadcastState = () => {
   const payload = JSON.stringify({ type: 'PIPELINE_UPDATE', stages, environment });
