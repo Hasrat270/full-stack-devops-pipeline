@@ -4,7 +4,8 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
 COPY package.json pnpm-lock.yaml ./
 ENV CI=true
-RUN pnpm install --frozen-lockfile || pnpm install
+RUN pnpm config set ignore-scripts true && pnpm install --frozen-lockfile
+
 
 
 
